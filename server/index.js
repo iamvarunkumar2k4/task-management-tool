@@ -16,11 +16,22 @@ app.get('/', (req, res) => {
   res.send('Task Tracker API is running');
 });
 
+const allowedOrigins = [
+  'https://task-management-tool-1-wcy5.onrender.com/'
+];
+
 const server = app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 const io = new Server(server, {
   cors: {
-    origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE']
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
   }
 });
 
@@ -36,6 +47,7 @@ app.locals.io = io;
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
+    console.log('MongoDB connected', process.env.MONGO_URI);
     console.log('MongoDB connected');
   })
   .catch((err) => {

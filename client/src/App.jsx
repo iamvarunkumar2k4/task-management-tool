@@ -3,8 +3,8 @@ import { io } from 'socket.io-client';
 import './App.css';
 
 const defaultFilter = { status: 'all', priority: 'all', sortBy: 'createdAt', order: 'desc' };
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/tasks';
-const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000';
+const API_URL = import.meta.env.VITE_API_URL || 'https://task-management-tool-wn5f.onrender.com/api/tasks';
+const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'https://task-management-tool-wn5f.onrender.com';
 
 function App() {
   const [tasks, setTasks] = useState([]);
