@@ -17,14 +17,25 @@ app.get('/', (req, res) => {
 });
 
 const allowedOrigins = [
-  'https://task-management-tool-1-wcy5.onrender.com/'
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'http://127.0.0.1:5173',
+  'https://task-management-tool-wn5f.onrender.com',
+  'https://task-management-tool-1-wcy5.onrender.com'
 ];
+
+const normalizeOrigin = (origin) => (origin ? origin.replace(/\/$/, '') : origin);
+const isAllowedOrigin = (origin) => {
+  if (!origin) return true;
+  const normalizedOrigin = normalizeOrigin(origin);
+  return allowedOrigins.some((allowedOrigin) => normalizeOrigin(allowedOrigin) === normalizedOrigin);
+};
 
 const server = app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 const io = new Server(server, {
   cors: {
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (isAllowedOrigin(origin)) {
         callback(null, true);
       } else {
         callback(new Error('Not allowed by CORS'));
