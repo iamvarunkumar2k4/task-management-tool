@@ -16,13 +16,10 @@ app.get('/', (req, res) => {
   res.send('Task Tracker API is running');
 });
 
-const allowedOrigins = [
-  'http://localhost:5173',
-  'http://localhost:5174',
-  'http://127.0.0.1:5173',
-  'https://task-management-tool-wn5f.onrender.com',
-  'https://task-management-tool-1-wcy5.onrender.com'
-];
+const allowedOrigins = (process.env.ALLOWED_ORIGINS || '')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
 
 const normalizeOrigin = (origin) => (origin ? origin.replace(/\/$/, '') : origin);
 const isAllowedOrigin = (origin) => {
